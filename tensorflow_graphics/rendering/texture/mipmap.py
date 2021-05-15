@@ -28,8 +28,13 @@ https://en.wikipedia.org/wiki/Texture_mapping for more information on
 texturing). You can find how the uv-coordinates map to textures exactly in the
 documentation of the ops.
 """
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 from typing import Optional, Sequence, Text
 
+from six.moves import range
 import tensorflow as tf
 from tensorflow_graphics.rendering.texture import texture_map
 from tensorflow_graphics.util import export_api
@@ -117,7 +122,7 @@ def map_texture(uv_map: tfg_type.TensorLike,
 
     if mipmap_images is not None:
       for mipmap_image in mipmap_images:
-        mipmap_image = tf.convert_to_tensor(mipmap_image)
+        mipmap_image = tf.convert_to_tensor(value=mipmap_image)
 
       texture_shape = mipmap_images[0].get_shape().as_list()
       texture_height, texture_width = texture_shape[-3:-1]
@@ -151,8 +156,9 @@ def map_texture(uv_map: tfg_type.TensorLike,
     uv_map = tf.reshape(uv_map, (-1, uv_height, uv_width, 2))
 
     ddx, ddy = tf.image.image_gradients(uv_map)
-    max_derivative = tf.math.maximum(tf.reduce_max(tf.math.abs(ddx), axis=-1),
-                                     tf.reduce_max(tf.math.abs(ddy), axis=-1))
+    max_derivative = tf.math.maximum(
+        tf.reduce_max(input_tensor=tf.math.abs(ddx), axis=-1),
+        tf.reduce_max(input_tensor=tf.math.abs(ddy), axis=-1))
     max_derivative = max_derivative * [texture_height, texture_width]
     max_derivative = tf.math.maximum(max_derivative, 1.0)
 

@@ -94,7 +94,7 @@ def map_texture(uv_map: tfg_type.TensorLike,
       raise ValueError('The interpolation_method is not recognized. It should '
                        'either be bilinear or nearest.')
 
-    texture_image_shape = tf.shape(texture_image)
+    texture_image_shape = tf.shape(input=texture_image)
     texture_height = tf.cast(texture_image_shape[-3], tf.float32)
     texture_width = tf.cast(texture_image_shape[-2], tf.float32)
     texture_num_channels = texture_image_shape[-1]
@@ -135,10 +135,11 @@ def map_texture(uv_map: tfg_type.TensorLike,
         resampling_type=resampling_type)
 
     # pylint: disable=bad-whitespace
-    interpolated_shape = tf.concat(
-        (tf.shape(uv_map)[:-1],
-         tf.convert_to_tensor([texture_num_channels, ])),
-        axis=0)
+    interpolated_shape = tf.concat((tf.shape(input=uv_map)[:-1],
+                                    tf.convert_to_tensor(value=[
+                                        texture_num_channels,
+                                    ])),
+                                   axis=0)
     # pylint: enable=bad-whitespace
 
     return tf.reshape(interpolated, interpolated_shape)
