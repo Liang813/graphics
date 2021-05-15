@@ -60,12 +60,12 @@ class MipmapTest(test_case.TestCase):
       mipmap_images_list,
       tiling,
       interpolated_gt):
-    uv_map = tf.convert_to_tensor(uv_map)
+    uv_map = tf.convert_to_tensor(value=uv_map)
     uv_map = tf.expand_dims(uv_map, 0)
 
     mipmap_images = []
     for mipmap_image in mipmap_images_list:
-      mipmap_image = tf.convert_to_tensor(mipmap_image)
+      mipmap_image = tf.convert_to_tensor(value=mipmap_image)
       mipmap_image = tf.stack((mipmap_image, mipmap_image * 10), -1)
       mipmap_images.append(mipmap_image)
 
@@ -76,7 +76,8 @@ class MipmapTest(test_case.TestCase):
         num_mipmap_levels=len(mipmap_images),
         tiling=tiling)
 
-    interpolated_gt = tf.convert_to_tensor(interpolated_gt, dtype=tf.float32)
+    interpolated_gt = tf.convert_to_tensor(
+        value=interpolated_gt, dtype=tf.float32)
     self.assertAllClose(interpolated, interpolated_gt)
 
   @parameterized.parameters(
@@ -93,10 +94,10 @@ class MipmapTest(test_case.TestCase):
       num_mipmap_levels,
       tiling,
       interpolated_gt):
-    uv_map = tf.convert_to_tensor(uv_map)
+    uv_map = tf.convert_to_tensor(value=uv_map)
     uv_map = tf.expand_dims(uv_map, 0)
 
-    texture_image = tf.convert_to_tensor(texture_image)
+    texture_image = tf.convert_to_tensor(value=texture_image)
     texture_image = tf.stack((texture_image, texture_image * 10), -1)
 
     interpolated = mipmap.map_texture(
@@ -106,7 +107,8 @@ class MipmapTest(test_case.TestCase):
         num_mipmap_levels=num_mipmap_levels,
         tiling=tiling)
 
-    interpolated_gt = tf.convert_to_tensor(interpolated_gt, dtype=tf.float32)
+    interpolated_gt = tf.convert_to_tensor(
+        value=interpolated_gt, dtype=tf.float32)
     self.assertAllClose(interpolated, interpolated_gt)
 
 

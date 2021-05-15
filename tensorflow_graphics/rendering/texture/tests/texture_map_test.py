@@ -57,15 +57,16 @@ class TextMapTest(test_case.TestCase):
                                               v_map,
                                               interpolated_gt,
                                               tiling):
-    texture = tf.convert_to_tensor(texture_image, dtype=tf.float32)
+    texture = tf.convert_to_tensor(value=texture_image, dtype=tf.float32)
     texture = tf.stack((texture, -texture,), axis=-1)
-    u_map = tf.convert_to_tensor(u_map, dtype=tf.float32)
-    v_map = tf.convert_to_tensor(v_map, dtype=tf.float32)
+    u_map = tf.convert_to_tensor(value=u_map, dtype=tf.float32)
+    v_map = tf.convert_to_tensor(value=v_map, dtype=tf.float32)
     uv_map = tf.stack((u_map, v_map,), axis=-1)
     uv_map = tf.expand_dims(uv_map, axis=0)
     interpolated = texture_map.map_texture(uv_map, texture, tiling)
     interpolated = tf.squeeze(interpolated)
-    interpolated_gt = tf.convert_to_tensor(interpolated_gt, dtype=tf.float32)
+    interpolated_gt = tf.convert_to_tensor(
+        value=interpolated_gt, dtype=tf.float32)
     self.assertAllClose(interpolated, interpolated_gt)
 
 

@@ -502,7 +502,7 @@ def random_patches(focal: tf.Tensor,
                    patch_width: int,
                    scale: float = 1.0,
                    indexing: str = "ij",
-                   name: str = None) -> Tuple[tf.Tensor, tf.Tensor]:
+                   name: str = "random_patches") -> Tuple[tf.Tensor, tf.Tensor]:
   """Sample patches at different scales and from an image.
 
   Args:
@@ -521,8 +521,7 @@ def random_patches(focal: tf.Tensor,
       ray directions in 3D passing from the M*N pixels of the patch and
     a tensor of shape `[A1, ..., An, M*N, 2]` with the pixel x, y locations.
   """
-  with tf.compat.v1.name_scope(name, "random_patches",
-                               [focal, principal_point]):
+  with tf.name_scope(name):
     focal = tf.convert_to_tensor(value=focal)
     principal_point = tf.convert_to_tensor(value=principal_point)
 

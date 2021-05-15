@@ -23,7 +23,7 @@ from tensorflow_graphics.util import export_api
 from tensorflow_graphics.util import shape
 
 
-def compute_radiance(rgba_values, distances, name=None):
+def compute_radiance(rgba_values, distances, name="ray_radiance"):
   """Renders the rgba values for points along a ray, as described in ["NeRF Representing Scenes as Neural Radiance Fields for View Synthesis"](https://github.com/bmild/nerf).
 
   Note:
@@ -42,7 +42,7 @@ def compute_radiance(rgba_values, distances, name=None):
     and a tensor of shape `[A1, ..., An, N]` for the sample weights.
   """
 
-  with tf.compat.v1.name_scope(name, "ray_radiance", [rgba_values, distances]):
+  with tf.name_scope(name):
     rgba_values = tf.convert_to_tensor(value=rgba_values)
     distances = tf.convert_to_tensor(value=distances)
     distances = tf.expand_dims(distances, -1)
@@ -72,8 +72,10 @@ def compute_radiance(rgba_values, distances, name=None):
     alpha = tf.squeeze(alpha, -1)
     ray_sample_weights = alpha * tf.math.cumprod(1. - alpha + 1e-10, -1,
                                                  exclusive=True)
-    ray_rgb = tf.reduce_sum(tf.expand_dims(ray_sample_weights, -1) * rgb, -2)
-    ray_alpha = tf.expand_dims(tf.reduce_sum(ray_sample_weights, -1), axis=-1)
+    ray_rgb = tf.reduce_sum(
+        input_tensor=tf.expand_dims(ray_sample_weights, -1) * rgb, axis=-2)
+    ray_alpha = tf.expand_dims(
+        tf.reduce_sum(input_tensor=ray_sample_weights, axis=-1), axis=-1)
     return ray_rgb, ray_alpha, ray_sample_weights
 
 # API contains all public functions and classes.
