@@ -20,10 +20,10 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 
-from tensorflow_graphics.util import asserts
-from tensorflow_graphics.util import export_api
-from tensorflow_graphics.util import safe_ops
-from tensorflow_graphics.util import shape
+from graphics.tensorflow_graphics.util import asserts
+from graphics.tensorflow_graphics.util import export_api
+from graphics.tensorflow_graphics.util import safe_ops
+from graphics.tensorflow_graphics.util import shape
 
 
 def cartesian_to_spherical_coordinates(point_cartesian, name=None):
